@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<title>Rafay Image Tools - Free Image Tools</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f6fb;
+    color:#172033;
+    transition:.3s;
+}
+
+body.dark{
+    background:#101827;
+    color:#f5f7fb;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:18px;
+}
+
+header{
+    text-align:center;
+    padding:20px 10px 25px;
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    margin:auto;
+    border-radius:20px;
+    display:grid;
+    place-items:center;
+    background:#2563eb;
+    color:white;
+    font-size:34px;
+    box-shadow:0 12px 30px #2563eb40;
+}
+
+h1{
+    margin:14px 0 7px;
+    font-size:32px;
+}
+
+.subtitle{
+    color:#667085;
+}
+
+.dark .subtitle{
+    color:#aeb9ca;
+}
+
+.theme{
+    position:fixed;
+    right:18px;
+    top:18px;
+    width:46px;
+    height:46px;
+    border:0;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+    background:white;
+    box-shadow:0 5px 20px #0002;
+}
+
+.dark .theme{
+    background:#263449;
+    color:white;
+}
+
+.tools{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.tool{
+    border:1px solid #dce4ef;
+    background:white;
+    color:#172033;
+    padding:13px 7px;
+    border-radius:13px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    min-height:62px;
+}
+
+.tool:hover{
+    transform:translateY(-2px);
+}
+
+.tool.active{
+    background:#2563eb;
+    color:white;
+    border-color:#2563eb;
+}
+
+.dark .tool{
+    background:#1c293c;
+    color:white;
+    border-color:#35465d;
+}
+
+.dark .tool.active{
+    background:#2563eb;
+}
+
+.card{
+    background:white;
+    border-radius:24px;
+    padding:25px;
+    box-shadow:0 15px 45px #17203318;
+}
+
+.dark .card{
+    background:#1c293c;
+    box-shadow:0 15px 45px #0005;
+}
+
+.upload{
+    border:2px dashed #9db0ca;
+    border-radius:18px;
+    padding:30px 15px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.upload:hover{
+    border-color:#2563eb;
+    background:#f7faff;
+}
+
+.dark .upload:hover{
+    background:#24334a;
+}
+
+.upload-icon{
+    font-size:42px;
+}
+
+.upload h3{
+    margin:10px 0 5px;
+}
+
+.upload p{
+    color:#667085;
+    margin:0;
+}
+
+.dark .upload p{
+    color:#aeb9ca;
+}
+
+#fileInput{
+    display:none;
+}
+
+.preview{
+    min-height:220px;
+    margin-top:20px;
+    border-radius:16px;
+    background:#eef2f7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:15px;
+}
+
+.dark .preview{
+    background:#263449;
+}
+
+.preview img{
+    max-width:100%;
+    max-height:400px;
+    display:none;
+    object-fit:contain;
+}
+
+.controls{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:18px;
+}
+
+.control{
+    background:#f7f9fc;
+    border-radius:13px;
+    padding:15px;
+}
+
+.dark .control{
+    background:#263449;
+}
+
+.control.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+input[type="number"],
+input[type="text"],
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccd6e5;
+    border-radius:9px;
+    font-size:15px;
+    background:white;
+    color:#172033;
+}
+
+.dark input,
+.dark select{
+    background:#1b283a;
+    color:white;
+    border-color:#40516a;
+}
+
+input[type="range"]{
+    width:100%;
+}
+
+button.main{
+    width:100%;
+    margin-top:20px;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button.main:hover{
+    background:#1d4ed8;
+}
+
+.message{
+    display:none;
+    margin-top:15px;
+    padding:12px;
+    border-radius:10px;
+    background:#e8f1ff;
+    color:#164eab;
+}
+
+.message.error{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.dark .message{
+    background:#21395c;
+    color:#d9e8ff;
+}
+
+.dark .message.error{
+    background:#4a2025;
+    color:#ffb0b0;
+}
+
+.output{
+    display:none;
+    margin-top:20px;
+}
+
+.output.show{
+    display:block;
+}
+
+.output img{
+    width:100%;
+    max-height:450px;
+    object-fit:contain;
+    border-radius:15px;
+    background:#eef2f7;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+}
+
+.actions button{
+    flex:1;
+    border:0;
+    border-radius:11px;
+    padding:13px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.download{
+    background:#16a34a;
+    color:white;
+}
+
+.copy{
+    background:#e8eef7;
+    color:#172033;
+}
+
+.dark .copy{
+    background:#334155;
+    color:white;
+}
+
+textarea{
+    width:100%;
+    min-height:180px;
+    margin-top:12px;
+    padding:12px;
+    border:1px solid #ccd6e5;
+    border-radius:10px;
+    font-family:monospace;
+}
+
+footer{
+    text-align:center;
+    padding:22px;
+    color:#667085;
+    font-size:13px;
+}
+
+.dark footer{
+    color:#aeb9ca;
+}
+
+@media(max-width:800px){
+    .tools{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:550px){
+    .container{
+        padding:12px;
+    }
+
+    h1{
+        font-size:27px;
+    }
+
+    .tools{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .controls{
+        grid-template-columns:1fr;
+    }
+
+    .control.full{
+        grid-column:auto;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<button class="theme" id="themeBtn" onclick="toggleDark()">🌙</button>
+
+<div class="container">
+
+<header>
+    <div class="logo">🖼️</div>
+    <h1>Rafay Image Tools</h1>
+    <p class="subtitle">
+        Free Image Tools for Android & PC
+    </p>
+</header>
+
+<div class="tools" id="tools"></div>
+
+<div class="card">
+
+    <div class="upload" onclick="document.getElementById('fileInput').click()">
+
+        <div class="upload-icon">📁</div>
+
+        <h3 id="uploadTitle">
+            Choose an Image
+        </h3>
+
+        <p>
+            JPG, PNG, WEBP, GIF and other supported images
+        </p>
+
+        <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+        >
+
+    </div>
+
+    <div class="preview">
+        <img id="originalPreview">
+        <span id="previewText">
+            Your image preview will appear here
+        </span>
+    </div>
+
+    <div id="controls" class="controls"></div>
+
+    <button
+        class="main"
+        id="processButton"
+        onclick="processTool()">
+        Process Image
+    </button>
+
+    <div id="message" class="message"></div>
+
+    <div id="output" class="output">
+
+        <h3>Result</h3>
+
+        <img id="resultImage">
+
+        <div class="actions">
+
+            <button
+                class="download"
+                onclick="downloadResult()">
+                ⬇️ Download Result
+            </button>
+
+            <button
+                class="copy"
+                id="copyButton"
+                onclick="copyResult()">
+                📋 Copy
+            </button>
+
+        </div>
+
+        <textarea
+            id="base64Output"
+            style="display:none"
+            readonly>
+        </textarea>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Rafay Image Tools • Free • Offline • Private
+</footer>
+
+</div>
+
+<script>
+
+const tools = [
+
+    ["compress","🗜️","Image Compressor"],
+    ["resize","📐","Image Resizer"],
+    ["crop","✂️","Image Cropper"],
+    ["jpgpng","🟠","JPG → PNG"],
+    ["pngjpg","🔵","PNG → JPG"],
+    ["base64","🔐","Image → Base64"],
+    ["gray","⚫","Grayscale"],
+    ["rotate","🔄","Rotate Image"],
+    ["flip","↔️","Flip Image"],
+    ["preview","👁️","Image Preview"]
+
+];
+
+let currentTool = "compress";
+
+let selectedFile = null;
+
+let sourceImage = new Image();
+
+let canvas = document.createElement("canvas");
+
+let resultBlob = null;
+
+let resultURL = "";
+
+const toolsBox =
+document.getElementById("tools");
+
+const controls =
+document.getElementById("controls");
+
+const fileInput =
+document.getElementById("fileInput");
+
+const originalPreview =
+document.getElementById("originalPreview");
+
+const previewText =
+document.getElementById("previewText");
+
+const output =
+document.getElementById("output");
+
+const resultImage =
+document.getElementById("resultImage");
+
+const message =
+document.getElementById("message");
+
+const base64Output =
+document.getElementById("base64Output");
+
+const processButton =
+document.getElementById("processButton");
+
+
+/* TOOL BUTTONS */
+
+toolsBox.innerHTML = tools.map(tool => {
+
+    return `
+        <button
+            class="tool"
+            data-tool="${tool[0]}"
+            onclick="selectTool('${tool[0]}')">
+
+            ${tool[1]}<br>
+            ${tool[2]}
+
+        </button>
+    `;
+
+}).join("");
+
+
+/* SELECT TOOL */
+
+function selectTool(tool){
+
+    currentTool = tool;
+
+    document.querySelectorAll(".tool").forEach(button => {
+
+        button.classList.toggle(
+            "active",
+            button.dataset.tool === tool
+        );
+
+    });
+
+    output.classList.remove("show");
+
+    base64Output.style.display = "none";
+
+    renderControls();
+
+    processButton.textContent =
+        tool === "preview"
+        ? "Show Preview"
+        : "Process Image";
+}
+
+
+/* CONTROLS */
+
+function renderControls(){
+
+    let html = "";
+
+    if(currentTool === "compress"){
+
+        html = `
+
+        <div class="control">
+
+            <label>
+                Compression Quality:
+                <span id="qualityValue">80</span>%
+            </label>
+
+            <input
+                type="range"
+                id="quality"
+                min="10"
+                max="100"
+                value="80"
+                oninput="qualityValue.textContent=this.value">
+
+        </div>
+
+        <div class="control">
+
+            <label>Output Format</label>
+
+            <select id="compressFormat">
+
+                <option value="image/jpeg">
+                    JPG
+                </option>
+
+                <option value="image/webp">
+                    WEBP
+                </option>
+
+                <option value="image/png">
+                    PNG
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "resize"){
+
+        html = `
+
+        <div class="control">
+
+            <label>Width (px)</label>
+
+            <input
+                type="number"
+                id="resizeWidth"
+                placeholder="1200">
+
+        </div>
+
+        <div class="control">
+
+            <label>Height (px)</label>
+
+            <input
+                type="number"
+                id="resizeHeight"
+                placeholder="800">
+
+        </div>
+
+        <div class="control full">
+
+            <label>Keep Aspect Ratio</label>
+
+            <select id="aspectRatio">
+
+                <option value="yes">
+                    Yes
+                </option>
+
+                <option value="no">
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "crop"){
+
+        html = `
+
+        <div class="control">
+
+            <label>Crop Width (px)</label>
+
+            <input
+                type="number"
+                id="cropWidth"
+                placeholder="800">
+
+        </div>
+
+        <div class="control">
+
+            <label>Crop Height (px)</label>
+
+            <input
+                type="number"
+                id="cropHeight"
+                placeholder="600">
+
+        </div>
+
+        <div class="control full">
+
+            <label>Crop Position</label>
+
+            <select id="cropPosition">
+
+                <option value="center">
+                    Center
+                </option>
+
+                <option value="top">
+                    Top
+                </option>
+
+                <option value="bottom">
+                    Bottom
+                </option>
+
+                <option value="left">
+                    Left
+                </option>
+
+                <option value="right">
+                    Right
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "jpgpng"){
+
+        html = `
+
+        <div class="control full">
+
+            <label>Output Format</label>
+
+            <select>
+
+                <option>PNG</option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "pngjpg"){
+
+        html = `
+
+        <div class="control">
+
+            <label>
+                JPG Quality:
+                <span id="jpgQualityValue">90</span>%
+            </label>
+
+            <input
+                type="range"
+                id="jpgQuality"
+                min="10"
+                max="100"
+                value="90"
+                oninput="jpgQualityValue.textContent=this.value">
+
+        </div>
+
+        <div class="control">
+
+            <label>Background</label>
+
+            <select id="jpgBackground">
+
+                <option value="#ffffff">
+                    White
+                </option>
+
+                <option value="#000000">
+                    Black
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "base64"){
+
+        html = `
+
+        <div class="control full">
+
+            <label>Encoding</label>
+
+            <select>
+
+                <option>
+                    Data URL Base64
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "gray"){
+
+        html = `
+
+        <div class="control full">
+
+            <label>Effect</label>
+
+            <select>
+
+                <option>
+                    Grayscale
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "rotate"){
+
+        html = `
+
+        <div class="control full">
+
+            <label>Rotation</label>
+
+            <select id="rotation">
+
+                <option value="90">
+                    90°
+                </option>
+
+                <option value="180">
+                    180°
+                </option>
+
+                <option value="270">
+                    270°
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "flip"){
+
+        html = `
+
+        <div class="control full">
+
+            <label>Flip Direction</label>
+
+            <select id="flipDirection">
+
+                <option value="horizontal">
+                    Horizontal
+                </option>
+
+                <option value="vertical">
+                    Vertical
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    if(currentTool === "preview"){
+
+        html = `
+
+        <div class="control full">
+
+            <label>Preview Mode</label>
+
+            <select>
+
+                <option>
+                    Original Image
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+
+    }
+
+    controls.innerHTML = html;
+}
+
+
+/* FILE LOAD */
+
+fileInput.addEventListener(
+    "change",
+    function(){
+
+        const file = this.files[0];
+
+        if(!file){
+            return;
+        }
+
+        selectedFile = file;
+
+        const url =
+            URL.createObjectURL(file);
+
+        sourceImage.onload = function(){
+
+            originalPreview.src = url;
+
+            originalPreview.style.display =
+                "block";
+
+            previewText.style.display =
+                "none";
+
+            showMessage(
+                "Image loaded: " +
+                file.name +
+                " • " +
+                sourceImage.naturalWidth +
+                " × " +
+                sourceImage.naturalHeight +
+                "px"
+            );
+
+        };
+
+        sourceImage.src = url;
+
+    }
+);
+
+
+/* PROCESS */
+
+function processTool(){
+
+    if(!selectedFile){
+
+        showMessage(
+            "Please choose an image first.",
+            true
+        );
+
+        return;
+
+    }
+
+    if(currentTool === "preview"){
+
+        output.classList.add("show");
+
+        resultImage.src =
+            originalPreview.src;
+
+        resultBlob = selectedFile;
+
+        resultURL =
+            originalPreview.src;
+
+        document.getElementById(
+            "copyButton"
+        ).style.display = "none";
+
+        showMessage(
+            "Image preview is ready."
+        );
+
+        return;
+    }
+
+
+    if(currentTool === "base64"){
+
+        const reader =
+            new FileReader();
+
+        reader.onload = function(){
+
+            base64Output.value =
+                reader.result;
+
+            base64Output.style.display =
+                "block";
+
+            resultBlob =
+                new Blob(
+                    [reader.result],
+                    {type:"text/plain"}
+                );
+
+            resultURL =
+                URL.createObjectURL(
+                    resultBlob
+                );
+
+            output.classList.add("show");
+
+            resultImage.style.display =
+                "none";
+
+            document.getElementById(
+                "copyButton"
+            ).style.display =
+                "block";
+
+            showMessage(
+                "Base64 created successfully."
+            );
+
+        };
+
+        reader.readAsDataURL(
+            selectedFile
+        );
+
+        return;
+
+    }
+
+
+    let width =
+        sourceImage.naturalWidth;
+
+    let height =
+        sourceImage.naturalHeight;
+
+    let ctx;
+
+
+    /* RESIZE */
+
+    if(currentTool === "resize"){
+
+        let newWidth =
+            parseInt(
+                document.getElementById(
+                    "resizeWidth"
+                ).value
+            );
+
+        let newHeight =
+            parseInt(
+                document.getElementById(
+                    "resizeHeight"
+                ).value
+            );
+
+        if(!newWidth || !newHeight){
+
+            showMessage(
+                "Please enter width and height.",
+                true
+            );
+
+            return;
+
+        }
+
+        const keep =
+            document.getElementById(
+                "aspectRatio"
+            ).value;
+
+        if(keep === "yes"){
+
+            const ratio =
+                width / height;
+
+            if(
+                document.activeElement.id ===
+                "resizeWidth"
+            ){
+
+                newHeight =
+                    Math.round(
+                        newWidth / ratio
+                    );
+
+            }
+            else{
+
+                newWidth =
+                    Math.round(
+                        newHeight * ratio
+                    );
+
+            }
+
+        }
+
+        width = newWidth;
+
+        height = newHeight;
+
+        ctx =
+            prepareCanvas(
+                width,
+                height
+            );
+
+        ctx.drawImage(
+            sourceImage,
+            0,
+            0,
+            width,
+            height
+        );
+
+    }
+
+
+    /* CROP */
+
+    else if(currentTool === "crop"){
+
+        let cropW =
+            parseInt(
+                document.getElementById(
+                    "cropWidth"
+                ).value
+            ) ||
+            Math.min(width,800);
+
+        let cropH =
+            parseInt(
+                document.getElementById(
+                    "cropHeight"
+                ).value
+            ) ||
+            Math.min(height,600);
+
+        cropW =
+            Math.min(
+                cropW,
+                width
+            );
+
+        cropH =
+            Math.min(
+                cropH,
+                height
+            );
+
+        let x =
+            (width-cropW)/2;
+
+        let y =
+            (height-cropH)/2;
+
+        const position =
+            document.getElementById(
+                "cropPosition"
+            ).value;
+
+        if(position==="top")
+            y=0;
+
+        if(position==="bottom")
+            y=height-cropH;
+
+        if(position==="left")
+            x=0;
+
+        if(position==="right")
+            x=width-cropW;
+
+        ctx =
+            prepareCanvas(
+                cropW,
+                cropH
+            );
+
+        ctx.drawImage(
+            sourceImage,
+            x,
+            y,
+            cropW,
+            cropH,
+            0,
+            0,
+            cropW,
+            cropH
+        );
+
+        width=cropW;
+        height=cropH;
+
+    }
+
+
+    /* ROTATE */
+
+    else if(currentTool === "rotate"){
+
+        const degree =
+            parseInt(
+                document.getElementById(
+                    "rotation"
+                ).value
+            );
+
+        if(
+            degree === 90 ||
+            degree === 270
+        ){
+
+            canvas.width =
+                height;
+
+            canvas.height =
+                width;
+
+        }
+        else{
+
+            canvas.width =
+                width;
+
+            canvas.height =
+                height;
+
+        }
+
+        ctx =
+            canvas.getContext("2d");
+
+        ctx.translate(
+            canvas.width/2,
+            canvas.height/2
+        );
+
+        ctx.rotate(
+            degree *
+            Math.PI /
+            180
+        );
+
+        ctx.drawImage(
+            sourceImage,
+            -width/2,
+            -height/2
+        );
+
+    }
+
+
+    /* FLIP */
+
+    else if(currentTool === "flip"){
+
+        ctx =
+            prepareCanvas(
+                width,
+                height
+            );
+
+        const direction =
+            document.getElementById(
+                "flipDirection"
+            ).value;
+
+        if(direction === "horizontal"){
+
+            ctx.translate(
+                width,
+                0
+            );
+
+            ctx.scale(
+                -1,
+                1
+            );
+
+        }
+        else{
+
+            ctx.translate(
+                0,
+                height
+            );
+
+            ctx.scale(
+                1,
+                -1
+            );
+
+        }
+
+        ctx.drawImage(
+            sourceImage,
+            0,
+            0
+        );
+
+    }
+
+
+    /* GRAYSCALE */
+
+    else{
+
+        ctx =
+            prepareCanvas(
+                width,
+                height
+            );
+
+        ctx.drawImage(
+            sourceImage,
+            0,
+            0
+        );
+
+        if(currentTool === "gray"){
+
+            const imageData =
+                ctx.getImageData(
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+            const pixels =
+                imageData.data;
+
+            for(
+                let i=0;
+                i<pixels.length;
+                i+=4
+            ){
+
+                const value =
+                    0.299*pixels[i] +
+                    0.587*pixels[i+1] +
+                    0.114*pixels[i+2];
+
+                pixels[i] =
+                    value;
+
+                pixels[i+1] =
+                    value;
+
+                pixels[i+2] =
+                    value;
+
+            }
+
+            ctx.putImageData(
+                imageData,
+                0,
+                0
+            );
+
+        }
+
+    }
+
+
+    /* COMPRESS */
+
+    let mime =
+        "image/png";
+
+    let quality =
+        1;
+
+
+    if(currentTool === "compress"){
+
+        mime =
+            document.getElementById(
+                "compressFormat"
+            ).value;
+
+        quality =
+            parseInt(
+                document.getElementById(
+                    "quality"
+                ).value
+            ) / 100;
+
+    }
+
+
+    /* PNG TO JPG */
+
+    if(currentTool === "pngjpg"){
+
+        mime =
+            "image/jpeg";
+
+        quality =
+            parseInt(
+                document.getElementById(
+                    "jpgQuality"
+                ).value
+            ) / 100;
+
+        const bg =
+            document.getElementById(
+                "jpgBackground"
+            ).value;
+
+        ctx.globalCompositeOperation =
+            "destination-over";
+
+        ctx.fillStyle =
+            bg;
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        ctx.globalCompositeOperation =
+            "source-over";
+
+    }
+
+
+    /* JPG TO PNG */
+
+    if(currentTool === "jpgpng"){
+
+        mime =
+            "image/png";
+
+    }
+
+
+    canvas.toBlob(
+        function(blob){
+
+            if(!blob){
+
+                showMessage(
+                    "Unable to create image.",
+                    true
+                );
+
+                return;
+
+            }
+
+            resultBlob =
+                blob;
+
+            resultURL =
+                URL.createObjectURL(
+                    blob
+                );
+
+            resultImage.src =
+                resultURL;
+
+            resultImage.style.display =
+                "block";
+
+            output.classList.add(
+                "show"
+            );
+
+            base64Output.style.display =
+                "none";
+
+            document.getElementById(
+                "copyButton"
+            ).style.display =
+                "none";
+
+            showMessage(
+                "Done • " +
+                formatBytes(blob.size) +
+                " • " +
+                canvas.width +
+                " × " +
+                canvas.height +
+                "px"
+            );
+
+        },
+        mime,
+        quality
+    );
+
+}
+
+
+/* CANVAS */
+
+function prepareCanvas(
+    width,
+    height
+){
+
+    canvas.width =
+        width;
+
+    canvas.height =
+        height;
+
+    return canvas.getContext(
+        "2d"
+    );
+
+}
+
+
+/* DOWNLOAD */
+
+function downloadResult(){
+
+    if(!resultBlob){
+
+        showMessage(
+            "Please process an image first.",
+            true
+        );
+
+        return;
+
+    }
+
+    let extension =
+        "png";
+
+    if(
+        resultBlob.type ===
+        "image/jpeg"
+    )
+        extension =
+            "jpg";
+
+    if(
+        resultBlob.type ===
+        "image/webp"
+    )
+        extension =
+            "webp";
+
+    if(
+        resultBlob.type ===
+        "text/plain"
+    )
+        extension =
+            "txt";
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+    link.href =
+        resultURL;
+
+    link.download =
+        "rafay-image-tool-" +
+        Date.now() +
+        "." +
+        extension;
+
+    document.body.appendChild(
+        link
+    );
+
+    link.click();
+
+    link.remove();
+
+}
+
+
+/* COPY */
+
+function copyResult(){
+
+    if(
+        currentTool !==
+        "base64"
+    ){
+
+        return;
+
+    }
+
+    navigator.clipboard
+        .writeText(
+            base64Output.value
+        )
+        .then(
+            function(){
+
+                showMessage(
+                    "Base64 copied successfully!"
+                );
+
+            }
+        )
+        .catch(
+            function(){
+
+                showMessage(
+                    "Copy failed. Select the text and copy it manually.",
+                    true
+                );
+
+            }
+        );
+
+}
+
+
+/* MESSAGE */
+
+function showMessage(
+    text,
+    error=false
+){
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message" +
+        (error ? " error" : "");
+
+    message.style.display =
+        "block";
+
+}
+
+
+/* FORMAT BYTES */
+
+function formatBytes(bytes){
+
+    if(bytes === 0)
+        return "0 Bytes";
+
+    const units =
+        [
+            "Bytes",
+            "KB",
+            "MB",
+            "GB"
+        ];
+
+    const i =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+    return (
+        bytes /
+        Math.pow(1024,i)
+    ).toFixed(2)
+    + " "
+    + units[i];
+
+}
+
+
+/* DARK MODE */
+
+function toggleDark(){
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+    const dark =
+        document.body.classList.contains(
+            "dark"
+        );
+
+    document.getElementById(
+        "themeBtn"
+    ).textContent =
+        dark ? "☀️" : "🌙";
+
+    localStorage.setItem(
+        "rafayDarkMode",
+        dark ? "1" : "0"
+    );
+
+}
+
+
+/* LOAD DARK MODE */
+
+if(
+    localStorage.getItem(
+        "rafayDarkMode"
+    ) === "1"
+){
+
+    document.body.classList.add(
+        "dark"
+    );
+
+    document.getElementById(
+        "themeBtn"
+    ).textContent =
+        "☀️";
+
+}
+
+
+/* DEFAULT TOOL */
+
+selectTool(
+    "compress"
+);
+
+</script>
+
+</body>
+</html>
